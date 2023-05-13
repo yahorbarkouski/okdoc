@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.yahorbarkouski"
-version = "1.0-SNAPSHOT"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -25,6 +25,7 @@ dependencies {
 intellij {
     version.set("2022.2.4")
     type.set("IC") // Target IDE Platform
+    instrumentCode.set(true)
 
     plugins.set(
         listOf("com.intellij.java")

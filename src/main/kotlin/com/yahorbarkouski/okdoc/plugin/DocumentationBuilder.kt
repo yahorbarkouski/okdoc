@@ -14,6 +14,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager
 import com.yahorbarkouski.okdoc.openai.OpenAIClient
 import com.yahorbarkouski.okdoc.plugin.settings.OkDocSettings
 import com.yahorbarkouski.okdoc.util.toDocumentation
+import org.jetbrains.uast.UClass
 
 object DocumentationBuilder {
 
