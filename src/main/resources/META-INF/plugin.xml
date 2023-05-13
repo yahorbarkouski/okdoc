@@ -1,0 +1,50 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.yahorbarkouski.okdoc</id>дл
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>OkDoc — GPT-Based Documentation Builder</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="yahor.barkouski@gmail.com" url="https://www.yahorbarkouski.com">Yahor Barkouski</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+       OkDoc is a plugin that uses GPT-based AI to automatically generate code documentation.
+       It understands the context and logic of your code, creating clear and comprehensive documentation.
+       This tool saves time, allowing developers to focus more on coding.
+       Opensource, completely free, and customizable.
+  ]]></description>
+
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <intentionAction>
+            <className>com.yahorbarkouski.okdoc.plugin.DocumentationBuilderIntention</className>
+        </intentionAction>
+        <applicationService serviceImplementation="com.yahorbarkouski.okdoc.plugin.settings.OkDocSettings" />
+        <projectConfigurable
+                instance="com.yahorbarkouski.okdoc.plugin.settings.OkDocConfigurable"
+                parentId="language"
+        />
+    </extensions>
+
+    <actions>
+        <action id="CodebrainGenerationAction"
+                class="com.yahorbarkouski.okdoc.plugin.DocumentationBuilderAction" text="Generate Documentation For The Whole File"
+                description="Smart code generation">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="meta alt M"/>
+        </action>
+    </actions>
+</idea-plugin>
