@@ -12,20 +12,28 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.yahorbarkouski.okdoc.openai.OpenAIClient
+import com.yahorbarkouski.okdoc.openai.request.ChatMessage
+import com.yahorbarkouski.okdoc.openai.request.ChatRequest
 import com.yahorbarkouski.okdoc.plugin.settings.OkDocSettings
 import com.yahorbarkouski.okdoc.util.toDocumentation
-import org.jetbrains.uast.UClass
 
 object DocumentationBuilder {
 
-    private val client = OpenAIClient(OkDocSettings.instance.state.apiToken)
+    private val settings = OkDocSettings.instance.state
+    private val client = OpenAIClient(settings.apiToken)
 
     fun generateDocumentation(project: Project, element: PsiElement) {
         ProgressManager.getInstance().run(
             object : Backgroundable(project, "Generating documentation") {
                 override fun run(indicator: ProgressIndicator) {
                     val elementText = getApplication().runReadAction(Computable { element.text })
-                    val response = client.generateDocumentation(elementText)
+                    val response = client.complete(
+                        ChatRequest(
+                            model = settings.model.id,
+                            temperature = settings.temperature,
+                            messages = listOf(ChatMessage(content = settings.prompt + ": " + elementText))
+                        )
+                    )
                     val documentation = response.toDocumentation()
 
                     getApplication().invokeLater { insertDocumentation(element, documentation) }
